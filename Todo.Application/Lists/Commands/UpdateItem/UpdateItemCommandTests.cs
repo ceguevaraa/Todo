@@ -50,7 +50,7 @@ namespace Todo.Application.Lists.Commands.UpdateItem
                 .ReturnsDbSet(new List<TodoItem> { _todoItem });
 
             _mocker.GetMock<ITodoFactory>()
-                .Setup(p => p.Update(
+                .Setup(p => p.Create(
                     Id,
                     UpdatedDescription))
                 .Returns(_updatedItem);

@@ -46,6 +46,12 @@ namespace Todo.Service.Controllers
             return _detailQuery.Execute(id);
         }
 
+        [HttpGet("{id}/progressions")]
+        public TodoItemDetailModel GetProgressions(int id)
+        {
+            return _detailQuery.Execute(id);
+        }
+
         [HttpPost]
         public HttpResponseMessage Create(CreateItemModel item)
         {

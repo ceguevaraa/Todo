@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Todo.Domain.Common;
+﻿using Todo.Domain.Common;
 
 namespace Todo.Domain.Progressions
 {
@@ -14,7 +9,7 @@ namespace Todo.Domain.Progressions
         public DateTime Created { get; set; }
         public decimal Percentage { get; set; }
         
-        public Progression(int id, DateTime created, decimal percentage)
+        public Progression(DateTime created, decimal percentage)
         {
             Created = created;
             _isValid = percentage > 0 && percentage < 100;

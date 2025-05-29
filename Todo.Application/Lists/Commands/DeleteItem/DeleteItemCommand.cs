@@ -15,7 +15,7 @@ namespace Todo.Application.Lists.Commands.DeleteItem
         }
         public void Execute(int id)
         {
-            var item = _todoFactory.Delete(id);
+            var item = _todoFactory.Create(id, null, null, null);
 
             var foundItem = _database.TodoItems.Where(i => i.Id == item.Id).FirstOrDefault();
 

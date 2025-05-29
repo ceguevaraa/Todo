@@ -23,7 +23,6 @@ namespace Todo.Application.Lists.Commands.CreateItem
             var item = _todoFactory.Create(model.Id, model.Title, model.Description, model.Category);
             _database.TodoItems.Add(item);
             _database.Save();
-
         }
     }
 }

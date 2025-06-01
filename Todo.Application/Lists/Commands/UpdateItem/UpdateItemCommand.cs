@@ -15,14 +15,12 @@ namespace Todo.Application.Lists.Commands.UpdateItem
         }
         public void Execute(UpdateItemModel model)
         {
-            var item = _todoFactory.Create(model.Id, model.Description);
+            var foundItem = _database.TodoItems.Where(i => i.Id == model.Id).FirstOrDefault();
 
-            var foundItem = _database.TodoItems.Where(i => i.Id == item.Id).FirstOrDefault();
-            
             if (foundItem == null)
                 return;
 
-            foundItem.Description = item.Description;
+            foundItem.Description = model.Description;
 
             _database.TodoItems.Update(foundItem);
             _database.Save();

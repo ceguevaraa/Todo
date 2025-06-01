@@ -43,11 +43,12 @@ namespace Todo.Application.Lists.Commands.UpdateItem
                 Category = Category
             };
 
-            _updatedItem = new TodoItem() { Id = Id, Description = UpdatedDescription};
+            _updatedItem = new TodoItem() { Id = Id, Description = UpdatedDescription };
 
             _mocker.GetMock<IDatabaseService>()
                 .Setup(p => p.TodoItems)
                 .ReturnsDbSet(new List<TodoItem> { _todoItem });
+
 
             _mocker.GetMock<ITodoFactory>()
                 .Setup(p => p.Create(
@@ -64,9 +65,9 @@ namespace Todo.Application.Lists.Commands.UpdateItem
         {
             _command.Execute(_model);
 
-            _mocker.GetMock<DbSet<TodoItem>>()
-                .Verify(p => p.Update(_updatedItem),
-                    Times.Never); //must be reviewed 
+            _mocker.GetMock<IDatabaseService>()
+                .Verify(p => p.Save(),
+                    Times.Once);
         }
     }
 }

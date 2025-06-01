@@ -12,6 +12,7 @@ namespace Todo.Domain.Progressions
         public Progression(DateTime created, decimal percentage)
         {
             Created = created;
+            Percentage = percentage;
             _isValid = percentage > 0 && percentage < 100;
         }
         public bool IsPercentRangeValid { get { return _isValid; } private set { _isValid = value; } }

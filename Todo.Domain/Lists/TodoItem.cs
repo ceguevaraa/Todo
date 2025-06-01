@@ -19,12 +19,9 @@ namespace Todo.Domain.Lists
         {
             get
             {
-                return _isCompleted;
+                return Progressions.Sum(x => x.Percentage) == 100;
             }
-            private set
-            {
-                _isCompleted = value;
-            }
+        
         }
         public List<Progression> Progressions { get; set; } = new List<Progression>();
 
@@ -44,18 +41,13 @@ namespace Todo.Domain.Lists
 
         private bool IsProgressionDateValid(Progression progression)
         {
-            return Progressions.Any(p => p.Created > progression.Created);
+            return Progressions.FirstOrDefault(p => p.Created > progression.Created) == null;
         }
 
         private bool ValidateProgressionsCompletion(Progression progression)
         {
             var currentCompletion = Progressions.Sum(i => i.Percentage);
-            return currentCompletion + progression.Percentage > 100;
-        }
-
-        private void IsItemCompleted()
-        {
-            _isCompleted = Progressions.Sum(x => x.Percentage) == 100;
+            return currentCompletion + progression.Percentage <= 100;
         }
     }
 }

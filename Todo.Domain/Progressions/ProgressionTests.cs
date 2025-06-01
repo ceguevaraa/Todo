@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
+using Todo.Domain.Lists;
 
 namespace Todo.Domain.Progressions
 {
     [TestFixture]
     public class ProgressionTests
     {
-
+        private TodoItem _todoItem;
         private Progression _progression;
         private const int Percentage = 50;
         private static readonly DateTime Created = DateTime.Now;
@@ -13,7 +14,7 @@ namespace Todo.Domain.Progressions
         [SetUp]
         public void SetUp()
         {
-            _progression = new Progression(Created, Percentage);
+            _progression = new Progression(_todoItem,Created, Percentage);
         }
         [Test]
         public void TestProgressionShouldHaveValidProperties()
@@ -25,7 +26,7 @@ namespace Todo.Domain.Progressions
         [Test]
         public void TestProgressionShouldNotAllowInvalidPercentage()
         {
-            _progression = new Progression(Created, 150); // Invalid percentage
+            _progression = new Progression(_todoItem, Created, 150); // Invalid percentage
             Assert.That(_progression.IsPercentRangeValid, Is.False, "Progression should not be valid with percentage greater than 100.");
         }
        

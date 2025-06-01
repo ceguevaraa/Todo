@@ -1,4 +1,5 @@
 ﻿using Todo.Domain.Common;
+using Todo.Domain.Lists;
 
 namespace Todo.Domain.Progressions
 {
@@ -8,9 +9,11 @@ namespace Todo.Domain.Progressions
         public int Id { get; set; }
         public DateTime Created { get; set; }
         public decimal Percentage { get; set; }
-        
-        public Progression(DateTime created, decimal percentage)
+        public TodoItem ParentItem { get; set; }
+
+        public Progression(TodoItem todoItem, DateTime created, decimal percentage)
         {
+            ParentItem = todoItem;
             Created = created;
             Percentage = percentage;
             _isValid = percentage > 0 && percentage < 100;

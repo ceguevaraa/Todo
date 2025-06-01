@@ -6,6 +6,7 @@ using Todo.Application.Lists.Commands.DeleteItem;
 using Todo.Application.Lists.Commands.UpdateItem;
 using Todo.Application.Lists.Queries.GetTodoItemDetail;
 using Todo.Application.Lists.Queries.GetTodoItems;
+using Todo.Application.Progressions.Commands.CreateProgression;
 
 namespace Todo.Service.Controllers
 {
@@ -19,21 +20,26 @@ namespace Todo.Service.Controllers
         private readonly IUpdateItemCommand _updateCommand;
         private readonly IDeleteItemCommand _deleteCommand;
 
+        private readonly ICreateProgressionCommand _createProgressionCommand;
+
 
         public TodoController(
             IGetTodoItemsQuery listQuery,
             IGetTodoItemDetailQuery detailQuery,
             ICreateItemCommand createCommand,
             IUpdateItemCommand updateCommand,
-            IDeleteItemCommand deleteCommand)
+            IDeleteItemCommand deleteCommand,
+            ICreateProgressionCommand createProgressionCommand)
         {
             _listQuery = listQuery;
             _detailQuery = detailQuery;
             _createCommand = createCommand;
             _updateCommand = updateCommand;
             _deleteCommand = deleteCommand;
+            _createProgressionCommand = createProgressionCommand;
         }
 
+        #region TodoItems
         [HttpGet]
         public IEnumerable<TodoItemModel> Get()
         {
@@ -42,12 +48,6 @@ namespace Todo.Service.Controllers
 
         [HttpGet("{id}")]
         public TodoItemDetailModel Get(int id)
-        {
-            return _detailQuery.Execute(id);
-        }
-
-        [HttpGet("{id}/progressions")]
-        public TodoItemDetailModel GetProgressions(int id)
         {
             return _detailQuery.Execute(id);
         }
@@ -73,5 +73,27 @@ namespace Todo.Service.Controllers
             _deleteCommand.Execute(itemId);
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
+        #endregion TodoItems
+
+        #region Progressions
+
+        [HttpGet("{id}/progressions")]
+        public TodoItemDetailModel GetProgressions(int id)
+        {
+            return _detailQuery.Execute(id);
+        }
+
+        [HttpPost("{id}/progressions")]
+        public HttpResponseMessage CreateProgression(CreateProgressionModel model)
+        {
+            _createProgressionCommand.Execute(model);
+            return new HttpResponseMessage(HttpStatusCode.Created);
+        }
+        #endregion Progressions
+
+
+
+
+
     }
 }

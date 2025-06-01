@@ -29,7 +29,7 @@ namespace Todo.Domain.Lists
         [Test]
         public void TestAddProgressionShouldAddProgressionToItem()
         {
-            var progression = new Progression(DateTime.Now, 50);
+            var progression = new Progression(_item,DateTime.Now, 50);
             _item.AddProgression(progression);
             Assert.That(_item.Progressions.Contains(progression));
         }
@@ -37,7 +37,7 @@ namespace Todo.Domain.Lists
         [Test]
         public void TestAddProgressionShouldNotAddInvalidProgression()
         {
-            var progression = new Progression(DateTime.Now, 150); // Invalid percentage
+            var progression = new Progression(_item, DateTime.Now, 150); // Invalid percentage
             _item.AddProgression(progression);
             Assert.That(!_item.Progressions.Contains(progression));
         }
@@ -45,10 +45,10 @@ namespace Todo.Domain.Lists
         [Test]
         public void TestAddProgressionShouldNotAddProgressionWithInvalidDate()
         {
-            var progression1 = new Progression(DateTime.Now, 50); // Valid progression
+            var progression1 = new Progression(_item, DateTime.Now, 50); // Valid progression
             _item.AddProgression(progression1);
 
-            var progression2 = new Progression(DateTime.Now.AddMinutes(-10), 30); // Invalid date (older than the first)
+            var progression2 = new Progression(_item, DateTime.Now.AddMinutes(-10), 30); // Invalid date (older than the first)
             _item.AddProgression(progression2);
 
             Assert.That(_item.Progressions.Contains(progression1));
@@ -58,9 +58,9 @@ namespace Todo.Domain.Lists
         [Test]
         public void TestIsCompletedShouldReturnTrueWhenProgressionsSumTo100()
         {
-            _item.AddProgression(new Progression(DateTime.Now, 50));
-            _item.AddProgression(new Progression(DateTime.Now.AddMinutes(1), 20));
-            _item.AddProgression(new Progression(DateTime.Now.AddMinutes(2), 30));
+            _item.AddProgression(new Progression(_item, DateTime.Now, 50));
+            _item.AddProgression(new Progression(_item, DateTime.Now.AddMinutes(1), 20));
+            _item.AddProgression(new Progression(_item, DateTime.Now.AddMinutes(2), 30));
 
 
             Assert.That(_item.IsCompleted);

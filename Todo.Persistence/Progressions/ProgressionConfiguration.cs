@@ -17,6 +17,12 @@ namespace Todo.Persistence.Progressions
 
             builder.Property(p => p.Created)
                 .IsRequired();
+
+            builder.HasOne(p => p.ParentItem);
+
+            builder.Navigation(p => p.ParentItem)
+                .IsRequired()
+                .AutoInclude();
         }
     }
 }

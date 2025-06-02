@@ -7,10 +7,6 @@
 		<AssemblyName>Todo.$(MSBuildProjectName)</AssemblyName>
 		<RootNamespace>Todo.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Folder Include="Progressions\Queries\" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />

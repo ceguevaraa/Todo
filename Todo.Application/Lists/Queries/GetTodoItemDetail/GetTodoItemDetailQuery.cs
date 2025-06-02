@@ -25,7 +25,14 @@ namespace Todo.Application.Lists.Queries.GetTodoItemDetail
                     Title = p.Title,
                     Description = p.Description,
                     Category = p.Category,
-                    IsCompleted = p.IsCompleted
+                    IsCompleted = p.IsCompleted,
+                    Progressions = p.Progressions
+                    .Select(x => new ProgressionModel
+                    {
+                        Percentage = x.Percentage,
+                        Created = x.Created,
+                    })
+                    .ToList()
                 })
                 .Single();
 

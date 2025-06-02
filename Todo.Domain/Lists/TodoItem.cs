@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Todo.Domain.Common;
+﻿using Todo.Domain.Common;
 using Todo.Domain.Progressions;
 
 namespace Todo.Domain.Lists
 {
     public class TodoItem : IEntity
     {
-        private bool _isCompleted;
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -19,43 +13,36 @@ namespace Todo.Domain.Lists
         {
             get
             {
-                return _isCompleted;
+                return Progressions.Sum(x => x.Percentage) == 100;
             }
-            private set
-            {
-                _isCompleted = value;
-            }
+        
         }
         public List<Progression> Progressions { get; set; } = new List<Progression>();
 
-        public void AddProgression(Progression progression)
+        public void ProcessProgression(Progression progression)
         {
             if (!progression.IsPercentRangeValid)
-                return;
+                throw new InvalidOperationException("Percent of progression is not valid");
             
             if (!IsProgressionDateValid(progression))
-                return;
+                throw new InvalidOperationException("Date of progression is not valid");
+
 
             if (!ValidateProgressionsCompletion(progression))
-                return;
+                throw new InvalidOperationException("Completion does not have a valid value");
 
             Progressions.Add(progression);
         }
 
         private bool IsProgressionDateValid(Progression progression)
         {
-            return Progressions.Any(p => p.Created > progression.Created);
+            return Progressions.FirstOrDefault(p => p.Created >= progression.Created) == null;
         }
 
         private bool ValidateProgressionsCompletion(Progression progression)
         {
             var currentCompletion = Progressions.Sum(i => i.Percentage);
-            return currentCompletion + progression.Percentage > 100;
-        }
-
-        private void IsItemCompleted()
-        {
-            _isCompleted = Progressions.Sum(x => x.Percentage) == 100;
+            return currentCompletion + progression.Percentage <= 100;
         }
     }
 }

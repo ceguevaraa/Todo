@@ -13,5 +13,6 @@ namespace Todo.Application.Lists.Queries.GetTodoItemDetail
         public string Description { get; set; }
         public string Category { get; set; }
         public bool IsCompleted { get; set; }
+        public List<ProgressionModel> Progressions { get; set; } = new List<ProgressionModel>();
     }
 }

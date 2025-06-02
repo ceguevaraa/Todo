@@ -1,4 +1,5 @@
-﻿using Todo.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Todo.Application.Interfaces;
 using Todo.Application.Progressions.Factory;
 
 namespace Todo.Application.Progressions.Commands.CreateProgression
@@ -15,10 +16,12 @@ namespace Todo.Application.Progressions.Commands.CreateProgression
         }
         public void Execute(CreateProgressionModel model)
         {
-            var todoItem = _database.TodoItems.FirstOrDefault(i => i.Id == model.TodoItemId)
+            var todoItem = _database.TodoItems.Include("Progressions").FirstOrDefault(i => i.Id == model.TodoItemId)
                 ?? throw new ArgumentException($"Todo item with ID {model.TodoItemId} does not exist.");
 
             var item = _progressionFactory.Create(todoItem, model.CreatedAt, model.Percentage);
+            
+            todoItem.ProcessProgression(item);
             _database.Progressions.Add(item);
             _database.Save();
         }

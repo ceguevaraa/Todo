@@ -84,8 +84,15 @@ namespace Todo.Service.Controllers
         }
 
         [HttpPost("{id}/progressions")]
-        public HttpResponseMessage CreateProgression(CreateProgressionModel model)
+        public HttpResponseMessage CreateProgression(int id, CreateProgressionRequest request)
         {
+            var model = new CreateProgressionModel
+            {
+                TodoItemId = id,
+                CreatedAt = request.CreatedAt,
+                Percentage = request.Percentage
+            };
+
             _createProgressionCommand.Execute(model);
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
